@@ -4,6 +4,7 @@ import styles from './auth.module.scss'
 
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import PasswordInput from '../../components/passwordInput/PasswordInput'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -38,14 +39,23 @@ const Login = () => {
               value={email}
               onChange={handleInputChange}
             />
-            <input
+
+            <PasswordInput 
+              placeholder="Password" 
+              name="password" 
+              value={password} 
+              onChange={handleInputChange} 
+            />
+
+            {/* <input
               type="password"
               placeholder="Password"
               required
               name="password"
               value={password}
               onChange={handleInputChange}
-            />
+            /> */}
+            
             <button type="submit" className="--btn --btn-primary --btn-block">
               Login
             </button>
