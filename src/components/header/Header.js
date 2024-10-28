@@ -1,3 +1,4 @@
+import './Header.scss'
 import { BiLogIn } from 'react-icons/bi'
 import { FaUserCircle } from 'react-icons/fa'
 

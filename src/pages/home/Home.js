@@ -1,3 +1,4 @@
+import Footer from '../../components/footer/Footer'
 import Header from '../../components/header/Header'
 import './Home.scss'
 import React from 'react'
@@ -7,6 +8,7 @@ const Home = () => {
     <div>
       <Header/>
       <h1>Home</h1>
+      <Footer/>
     </div>
   )
 }
