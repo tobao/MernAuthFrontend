@@ -1,10 +1,12 @@
 import { BiLogIn } from 'react-icons/bi'
+import {BsCheck2All} from 'react-icons/bs'
 import Card from '../../components/card/Card'
 import styles from './auth.module.scss'
 
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import PasswordInput from '../../components/passwordInput/PasswordInput'
+import { FaTimes } from 'react-icons/fa'
 
 const initialState = {
   name: "",
@@ -14,10 +16,30 @@ const initialState = {
 }
 
 const Register = () => {
-  const [formData, setFormData] = useState(initialState);
-  const { name, email, password, password2 } = formData;
-  const handleInputChange = () => {};
-  const loginUser = () => {};
+  const [formData, setFormData] = useState(initialState)
+  const { name, email, password, password2 } = formData
+
+  const [uCase, setUCase] = useState(false)
+  const [num, setNum] = useState(false)
+  const [sChar, setSChar] = useState(false)
+  const [passLenghth, setPassLenghth] = useState(false)
+
+  const timesIcon = <FaTimes color='red' size={15} />
+  const checkIcon = <BsCheck2All color='green' size={15} />
+
+  const switchIcon = (condition) => {
+    if(condition){
+      return checkIcon
+    }
+    return timesIcon
+  }
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
+  }
+
+  const loginUser = () => {}
 
   return (
     <div className={`container ${styles.auth}`}>
@@ -34,7 +56,7 @@ const Register = () => {
               type="text"
               placeholder="Name"
               required
-              name="email"
+              name="name"
               value={name}
               onChange={handleInputChange}
             />
@@ -61,6 +83,38 @@ const Register = () => {
               value={password2} 
               onChange={handleInputChange} 
             />
+
+            {/*Password Strength */}
+            <Card cardClass={styles.group}>
+              <ul className='form-list'>
+                <li>
+                  <span className={styles.indicator}>
+                    
+                    {/* {uCase?checkIcon:timesIcon} */}
+                    {switchIcon(uCase)}
+                    &nbsp; Lowercase & Uppercase
+                  </span>
+                </li>
+                <li>
+                  <span className={styles.indicator}>
+                    {switchIcon(num)}
+                    &nbsp; Number (0-9)
+                  </span>
+                </li>
+                <li>
+                  <span className={styles.indicator}>
+                    {switchIcon(sChar)}
+                    &nbsp; Special Character (!@#%^&8)
+                  </span>
+                </li>
+                <li>
+                  <span className={styles.indicator}>
+                    {switchIcon(passLenghth)}
+                    &nbsp; At least 6 Characters
+                  </span>
+                </li>
+              </ul>
+            </Card>
             
             <button type="submit" className="--btn --btn-primary --btn-block">
               Register
