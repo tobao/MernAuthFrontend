@@ -3,7 +3,7 @@ import {BsCheck2All} from 'react-icons/bs'
 import Card from '../../components/card/Card'
 import styles from './auth.module.scss'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PasswordInput from '../../components/passwordInput/PasswordInput'
 import { FaTimes } from 'react-icons/fa'
@@ -38,6 +38,33 @@ const Register = () => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
   }
+
+  useEffect(()=>{
+    //Check Lower and Uppercase: match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)
+    if (password.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/)) {
+      setUCase(true)      
+    } else {
+      setUCase(false)
+    }
+    //Check for numbers: match(/([0-9])/) 
+    if (password.match(/([0-9])/)) {
+      setNum(true)
+    } else {
+      setNum(false)
+    }
+    //Check for special character: match(/([!,%,&,@,#,$,^,*,?,_,~])/)
+    if (password.match(/([!,%,&,@,#,$,^,*,?,_,~])/)) {
+      setSChar(true)
+    } else {
+      setSChar(false)
+    }
+    //Check for password LENGTH
+    if (password.length>5) {
+      setPassLenghth(true)
+    } else {
+      setPassLenghth(false)
+    }
+  },[password])
 
   const loginUser = () => {}
 
