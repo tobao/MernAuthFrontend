@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './Profile.scss'
 import Card from '../../components/card/Card'
 import profileImg from '../../assets/avatarr.png'
+import PageMenu from '../../components/pagemenu/PageMenu'
 
 const initialState = {
   name: 'Bao',
@@ -33,6 +34,7 @@ const Profile = () => {
     <>
       <section>
         <div className='container'>
+          <PageMenu/>
           <div div className="--flex-center profile">
             <h2>Profile</h2>
           </div>
