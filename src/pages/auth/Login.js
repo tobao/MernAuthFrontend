@@ -6,10 +6,20 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import PasswordInput from '../../components/passwordInput/PasswordInput'
 
+const initialState = {
+  email:"",
+  password:"",
+}
+
 const Login = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const handleInputChange = () => {}
+  const [formData, setFormData] = useState(initialState)
+  const {email,password} = formData
+
+  const handleInputChange = (e) => {
+    const {name, value} = e.target
+    setFormData({...formData, [name]:value})
+  };
+
   const loginUser = () => {}
 
   return (
