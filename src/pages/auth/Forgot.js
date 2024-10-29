@@ -36,7 +36,7 @@ const Forgot = () => {
                 <Link to='/'>-Home</Link>
               </p>
               <p>
-                <Link to='/register'>Login-</Link>
+                <Link to='/login'>Login-</Link>
               </p>
           </div>
           </form>
