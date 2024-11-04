@@ -36,7 +36,28 @@ const authSlice = createSlice({
       state.isSuccess= false;
       state.isLoading= false;
       state.message='';
-    }
+    },
+    extraReducers: (builder) => {
+      builder
+      //Register User 
+      .addCase(register.pending, (state,action)=>{
+        state.isLoading = true
+      })
+      .addCase(register.fulfilled, (state,action)=> {
+        state.isLoading = false;
+        state.isSuccess= true;
+        state.isLoggedIn=true;
+        state.user= action.payload;
+        console.log(action.payload)
+        toast.success('Registration successful');
+      })
+      .addCase(register.rejected, (state,action)=> {
+        state.isLoading = false;
+        state.isError= true;
+        state.message=action.payload;
+        state.user= null;
+        toast.error(action.payload);
+      })
   }
 });
 
