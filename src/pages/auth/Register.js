@@ -7,6 +7,8 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import PasswordInput from '../../components/passwordInput/PasswordInput'
 import { FaTimes } from 'react-icons/fa'
+import { toast } from 'react-toastify'
+import { validateEmail } from '../../redux/features/auth/authService'
 
 const initialState = {
   name: "",
@@ -66,7 +68,29 @@ const Register = () => {
     }
   },[password])
 
-  const loginUser = () => {}
+  const registerUser = (e) => {
+    e.preventDefault()
+    if(!name || !email || !password){
+      return toast.error('All fields are required')
+    }
+    if(password.length < 6){
+      return toast.error('Password must be up to 6 characters')
+    }
+    if(!validateEmail){
+      return toast.error('Please enter a valid email')
+    }
+    if(password !== password2 ){
+      return toast.error('Password do not match')
+    }
+  }
+
+  //Tạo đối tượng userData chứa thông tin người dùng
+  const userData = {
+    name,email,password
+  }
+
+  console.log(userData)
+  
 
   return (
     <div className={`container ${styles.auth}`}>
@@ -78,7 +102,7 @@ const Register = () => {
 
           <h2>Register</h2>
 
-          <form onSubmit={loginUser}>
+          <form onSubmit={registerUser}>
             <input
               type="text"
               placeholder="Name"
@@ -101,7 +125,7 @@ const Register = () => {
               placeholder="Password" 
               name="password" 
               value={password} 
-              onChange={handleInputChange} 
+              onChange={handleInputChange}
             />
 
             <PasswordInput 
@@ -109,6 +133,11 @@ const Register = () => {
               name="password2" 
               value={password2} 
               onChange={handleInputChange} 
+              onPaste={(e) => {
+                e.preventDefault()
+                toast.error('Cannot paste into field')
+                return false
+              }} 
             />
 
             {/*Password Strength */}
@@ -151,7 +180,7 @@ const Register = () => {
           <span className={styles.register}>
             <Link to="/">Home</Link>
             <p>&nbsp; Already have an account? &nbsp; </p>
-            <Link to="/register">Login</Link>
+            <Link to="/login">Login</Link>
           </span>
 
         </div>

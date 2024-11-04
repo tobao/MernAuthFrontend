@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import authService from './authService'
+import { toast } from 'react-toastify'
 
 const initialState = {
   isLoggedIn: false,
@@ -58,8 +59,9 @@ const authSlice = createSlice({
         state.user= null;
         toast.error(action.payload);
       })
+    }
   }
-});
+})
 
 export const {RESET} = authSlice.actions
 

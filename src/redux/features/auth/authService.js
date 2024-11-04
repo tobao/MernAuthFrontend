@@ -2,6 +2,13 @@ import axios from 'axios'
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL
 export const API_URL = `${BACKEND_URL}/api/users/`
 
+// Validate email
+export const validateEmail = (email) => {
+  return email.match(
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  )
+}
+
 //Register User 
 const register = async (userData) => {
   //Gửi yêu cầu HTTP POST đến endpoint API_URL + 'register' với dữ liệu userData. (Gửi yêu cầu đăng ký người dùng mới đến server)
