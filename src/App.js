@@ -11,12 +11,17 @@ import Profile from './pages/profile/Profile';
 import ChangePassword from './pages/changePassword/ChangePassword';
 import UserLists from './pages/userLists/UserLists';
 // import Loader from './components/loader/Loader'
+import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+axios.defaults.withCredentials = true;
 
 function App() {
   return (
     <>
       <BrowserRouter>
-        {/* <Loader/> */}
+        <ToastContainer />
         <Routes>
           <Route path='/' element={<Layout> <Home/> </Layout>}></Route>
           <Route path='/login' element={<Login/>}></Route>
