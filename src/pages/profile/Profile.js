@@ -35,7 +35,7 @@ const Profile = () => {
       <section>
         <div className='container'>
           <PageMenu/>
-          <div div className="--flex-center profile">
+          <div className="--flex-center profile">
             <h2>Profile</h2>
           </div>
           

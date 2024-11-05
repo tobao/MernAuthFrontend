@@ -1,14 +1,18 @@
-import { BiLogIn } from 'react-icons/bi'
+import {TiUserAddOutline} from 'react-icons/ti'
 import {BsCheck2All} from 'react-icons/bs'
 import Card from '../../components/card/Card'
 import styles from './auth.module.scss'
 
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import PasswordInput from '../../components/passwordInput/PasswordInput'
 import { FaTimes } from 'react-icons/fa'
 import { toast } from 'react-toastify'
 import { validateEmail } from '../../redux/features/auth/authService'
+
+import {useDispatch, useSelector} from "react-redux"
+import { RESET, register } from '../../redux/features/auth/authSlice'
+import Loader from '../../components/loader/Loader'
 
 const initialState = {
   name: "",
@@ -20,6 +24,14 @@ const initialState = {
 const Register = () => {
   const [formData, setFormData] = useState(initialState)
   const { name, email, password, password2 } = formData
+
+    // Khai báo biến dispatch để gửi action lên Redux store
+    const dispatch = useDispatch()
+    //Khai báo biến navigate để điều hướng trang
+    const navigate = useNavigate()
+
+      //Trích xuất các trạng thái từ Redux store
+  const {isLoading, isLoggedIn, isSuccess, message} = useSelector((state) => state.auth)
 
   const [uCase, setUCase] = useState(false)
   const [num, setNum] = useState(false)
@@ -68,36 +80,53 @@ const Register = () => {
     }
   },[password])
 
-  const registerUser = (e) => {
-    e.preventDefault()
-    if(!name || !email || !password){
+  //Hàm registerUser được gọi khi form đăng ký được submit.
+  const registerUser = async (e) => {
+    e.preventDefault() //Ngăn chặn hành vi mặc định của form (ngăn không cho trang reload khi submit).
+
+    if(!name|| !email || !password){
       return toast.error('All fields are required')
     }
-    if(password.length < 6){
+    if(password.length<6){
       return toast.error('Password must be up to 6 characters')
     }
-    if(!validateEmail){
+    if(!validateEmail(email)){
       return toast.error('Please enter a valid email')
     }
     if(password !== password2 ){
       return toast.error('Password do not match')
     }
+
+    //Tạo đối tượng userData chứa thông tin người dùng
+    const userData = {
+      name,email,password
+    }
+
+    // console.log(userData)
+    // Gửi action register với userData lên Redux store
+    await dispatch(register(userData))
   }
 
-  //Tạo đối tượng userData chứa thông tin người dùng
-  const userData = {
-    name,email,password
+// Hook useEffect để theo dõi sự thay đổi của các trạng thái isSuccess và isLoggedIn
+useEffect(() => {
+  console.log("isSuccess:", isSuccess);
+  console.log("isLoggedIn:", isLoggedIn);
+  // Nếu đăng ký thành công và đã đăng nhập
+  if(isSuccess && isLoggedIn){
+    // Điều hướng đến trang profile
+    navigate('/profile')
   }
-
-  console.log(userData)
+  // Gửi action RESET để reset trạng thái trong Redux store
+  dispatch(RESET())
+},[isLoggedIn, isSuccess, dispatch, navigate]) // Các biến mà useEffect phụ thuộc
   
-
   return (
     <div className={`container ${styles.auth}`}>
+      {isLoading && <Loader/>}
       <Card>
         <div className={styles.form}>
           <div className="--flex-center">
-            <BiLogIn size={35} color="#999" />
+            <TiUserAddOutline size={35} color="#999" />
           </div>
 
           <h2>Register</h2>
