@@ -2,9 +2,14 @@ import { BiLogIn } from 'react-icons/bi'
 import Card from '../../components/card/Card'
 import styles from './auth.module.scss'
 
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import PasswordInput from '../../components/passwordInput/PasswordInput'
+import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
+import { validateEmail } from '../../redux/features/auth/authService'
+import { login, RESET } from '../../redux/features/auth/authSlice'
+import Loader from '../../components/loader/Loader'
 
 const initialState = {
   email:"",
@@ -20,10 +25,48 @@ const Login = () => {
     setFormData({...formData, [name]:value})
   };
 
-  const loginUser = () => {}
+  // Khai báo biến dispatch để gửi action lên Redux store
+  const dispatch = useDispatch()
+  //Khai báo biến navigate để điều hướng trang
+  const navigate = useNavigate()
+
+  //Trích xuất các trạng thái từ Redux store
+  const {isLoading, isLoggedIn, isSuccess, message, isError , twoFactor} = useSelector((state) => state.auth)
+  
+
+  const loginUser = async (e) => {
+    e.preventDefault() 
+
+    if( !email || !password){
+      return toast.error('All fields are required')
+    }
+    if(!validateEmail){
+      return toast.error('Please enter a valid email')
+    }
+
+    //Tạo đối tượng userData chứa thông tin người dùng
+    const userData = {
+      email,password
+    }
+
+    // Gửi action login với userData lên Redux store
+    await dispatch(login(userData))
+  }
+
+  // Hook useEffect để theo dõi sự thay đổi của các trạng thái isSuccess và isLoggedIn
+  useEffect(() => {
+    if(isSuccess && isLoggedIn){
+      // Điều hướng đến trang profile
+      navigate('/profile')
+    }
+
+    // Gửi action RESET để reset trạng thái trong Redux store
+    dispatch(RESET())
+  },[isLoggedIn, isSuccess, dispatch, navigate, isError, twoFactor, email ]) // Các biến mà useEffect phụ thuộc
 
   return (
     <div className={`container ${styles.auth}`}>
+      {isLoading && <Loader/>}
       <Card>
         <div className={styles.form}>
           <div className="--flex-center">
