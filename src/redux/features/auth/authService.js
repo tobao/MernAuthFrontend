@@ -34,12 +34,19 @@ const logout = async () => {
   return response.data.message
 }
 
+//Get user profile
+const getUser = async () => {
+  const response = await axios.get(API_URL + 'getUser')
+  return response.data
+}
+
 // Tạo đối tượng authService chứa các hàm dịch vụ
 const authService = {
   register,
   login,
   logout,
-  getLoginStatus
+  getLoginStatus,
+  getUser
 }
 
 export default authService
