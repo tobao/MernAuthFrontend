@@ -14,10 +14,20 @@ import UserLists from './pages/userLists/UserLists';
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { getLoginStatus } from './redux/features/auth/authSlice';
 
 axios.defaults.withCredentials = true;
 
 function App() {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getLoginStatus())
+
+  },[dispatch])
+
   return (
     <>
       <BrowserRouter>
