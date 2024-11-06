@@ -4,14 +4,25 @@ import { FaUserCircle } from 'react-icons/fa'
 
 import React from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux';
+import { logout, RESET } from '../../redux/features/auth/authSlice'
 
 const activeLink = ({isActive}) => (isActive?'ative':'')
 
 const Header = () => {
   const navigate = useNavigate()
 
+  //Sử dụng hook useNavigate để lấy hàm navigate dùng để điều hướng.
+  const dispatch = useDispatch()
+
   const goHome = () => {
     navigate('/')
+  }
+
+  const logoutuser = async () => {
+    dispatch(RESET())
+    await dispatch(logout())
+    navigate('/login')
   }
   
   return (
@@ -38,7 +49,7 @@ const Header = () => {
           </NavLink>
         </li>
         <li>
-          <button className="--btn --btn-secondary">Logout</button>
+          <button onClick={logoutuser} className="--btn --btn-secondary">Logout</button>
         </li>
       </ul>
     </nav>
