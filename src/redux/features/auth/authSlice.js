@@ -154,5 +154,6 @@ export const {RESET} = authSlice.actions
 
 export const selectIsLoggedIn = (state) => state.auth.isLoggedIn
 //Selector này được sử dụng để trích xuất giá trị của thuộc tính isLoggedIn từ slice "auth" trong Redux store. Selector là một cách tiện lợi để truy xuất dữ liệu từ Redux store mà không cần phải lặp lại nhiều lần cú pháp truy cập state trong các component của bạn.
-
+export const selectUser = (state) => state.auth.user
+//selector selectUser được sử dụng để truy cập thuộc tính user từ slice auth.
 export default authSlice.reducer

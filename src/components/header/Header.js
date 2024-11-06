@@ -6,6 +6,7 @@ import React from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { logout, RESET } from '../../redux/features/auth/authSlice'
+import { ShowOnLogin, ShowOnLogout } from '../protect/hiddenLink'
 
 const activeLink = ({isActive}) => (isActive?'ative':'')
 
@@ -34,23 +35,29 @@ const Header = () => {
       </div>
 
       <ul className="home-links">
-        <li className="--flex-center">
-          <FaUserCircle size={20} />
-        </li>
-        <p className="--color-white">Hi, Bao To</p>
-        <li>
-          <button className="--btn --btn-primary">
-            <Link to="/login">Login</Link>
-          </button>
-        </li>
-        <li>
-          <NavLink to="/profile" className={activeLink}>
-            Profile
-          </NavLink>
-        </li>
-        <li>
-          <button onClick={logoutuser} className="--btn --btn-secondary">Logout</button>
-        </li>
+        <ShowOnLogin>
+          <li className="--flex-center">
+            <FaUserCircle size={20} />
+            <p className="--color-white">Hi, Bao To</p>
+          </li>
+        </ShowOnLogin>
+        <ShowOnLogout>
+          <li>
+            <button className="--btn --btn-primary">
+              <Link to="/login">Login</Link>
+            </button>
+          </li>
+        </ShowOnLogout>
+        <ShowOnLogin>
+          <li>
+            <NavLink to="/profile" className={activeLink}>
+              Profile
+            </NavLink>
+          </li>
+          <li>
+            <button onClick={logoutuser} className="--btn --btn-secondary">Logout</button>
+          </li>
+        </ShowOnLogin>
       </ul>
     </nav>
   </header>
