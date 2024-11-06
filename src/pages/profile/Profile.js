@@ -3,6 +3,7 @@ import './Profile.scss'
 import Card from '../../components/card/Card'
 import profileImg from '../../assets/avatarr.png'
 import PageMenu from '../../components/pagemenu/PageMenu'
+import useRedirectLoggedOutUser from '../../customHook/useRedirectLoggedOutUsers'
 
 const initialState = {
   name: 'Bao',
@@ -15,6 +16,7 @@ const initialState = {
 }
 
 const Profile = () => {
+  useRedirectLoggedOutUser('/login')
 
   const [profile, setProfile] = useState(initialState);
 
