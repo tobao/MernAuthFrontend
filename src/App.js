@@ -14,19 +14,23 @@ import UserLists from './pages/userLists/UserLists';
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { getLoginStatus } from './redux/features/auth/authSlice';
+import { getLoginStatus, getUser, selectIsLoggedIn, selectUser } from './redux/features/auth/authSlice';
 
 axios.defaults.withCredentials = true;
 
 function App() {
   const dispatch = useDispatch()
+  const isLoggedIn = useSelector(selectIsLoggedIn)
+  const user = useSelector(selectUser) 
 
   useEffect(() => {
     dispatch(getLoginStatus())
-
-  },[dispatch])
+    if(isLoggedIn && user ===null){
+      dispatch(getUser)
+    }
+  },[dispatch, isLoggedIn, user])
 
   return (
     <>

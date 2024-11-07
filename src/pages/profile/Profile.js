@@ -5,12 +5,12 @@ import Card from '../../components/card/Card'
 import PageMenu from '../../components/pagemenu/PageMenu'
 import useRedirectLoggedOutUser from '../../customHook/useRedirectLoggedOutUsers'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUser } from '../../redux/features/auth/authSlice'
+import { getUser, selectUser, updateUser } from '../../redux/features/auth/authSlice'
 import Loader from '../../components/loader/Loader'
 import { toast } from 'react-toastify'
 
 const cloud_name = process.env.REACT_APP_CLOUD_NAME
-const upload_preset = process.env.REACT_APP_UPLOAD_PRESET 
+const upload_preset = process.env.REACT_APP_UPLOAD_PRESET
 
 const Profile = () => {
   useRedirectLoggedOutUser('/login')
@@ -34,8 +34,8 @@ const Profile = () => {
   }, [dispatch])
 
   const [profile, setProfile] = useState(initialState);
-  const [profileImage, setProfileImage] = useState(initialState)
-  const [imagePreview, setImagePreview] = useState(initialState)
+  const [profileImage, setProfileImage] = useState(null)
+  const [imagePreview, setImagePreview] = useState(null)
 
   const handleImageChange = (e) => {
     setProfileImage(e.target.files[0])
@@ -69,8 +69,18 @@ const Profile = () => {
        )
        const imgData = await response.json()
        console.log(imgData)
-       imageURL = imgData.url.toString()
+      imageURL = imgData.url.toString()
       }
+
+      //Save profile to MongDB
+      const userData = {
+        name: profile.name,
+        phone: profile.phone,
+        bio: profile.bio,
+        photo: profileImage? imageURL: profile.photo,
+      }
+
+      dispatch(updateUser(userData))
 
       toast.success('Image Uploaded')
     } catch (error) {
@@ -80,8 +90,8 @@ const Profile = () => {
 
   return (
     <>
+      {isLoading && <Loader/>}
       <section>
-        {isLoading && <Loader/>}
         <div className='container'>
           <PageMenu/>
           <div className="--flex-center profile">
@@ -89,38 +99,43 @@ const Profile = () => {
           </div>
           
           <div className="--flex-center profile">
-            <Card cardClass={'card'}> 
-              <div className="profile-photo">
-                <div>
-                  <img src={imagePreview === null ? user?.photo: imagePreview} alt="Profileimg" />
-                  <h3>{profile.role}</h3>
-                </div>
-              </div>
-              <form onSubmit={saveProfile}>
-                <p>
-                  <label >Change Photo:</label>
-                  <input type="file" accept='image/*' onChange={handleImageChange} />
-                </p>
-                <p>
-                  <label >Name:</label>
-                  <input type="text" name='name' value={profile?.name} onChange={handleInputChange} />
-                </p>
-                <p>
-                  <label >Email:</label>
-                  <input type="email" name='email' value={profile?.email} onChange={handleInputChange} disabled/>
-                </p>
-                <p>
-                  <label >Phone:</label>
-                  <input type="text" name='phone' value={profile?.phone} onChange={handleInputChange}/>
-                </p>
-                <p>
-                  <label >Bio:</label>
-                  <textarea name="bio" value={profile?.bio} onChange={handleInputChange} cols='30' rows='10'></textarea>
-                </p>
-                <button className='--btn --btn-primary --btn-block'>
-                  Update Profile
-                </button>
-              </form>
+            <Card cardClass={'card'}>
+              {!isLoading && user && (
+                <>
+                  <div className="profile-photo">
+                    <div>
+                      <img src={imagePreview === null ? user?.photo: imagePreview} alt="Profileimg" />
+                      <h3>{profile.role}</h3>
+                    </div>
+                  </div>
+                  <form onSubmit={saveProfile}>
+                    <p>
+                      <label >Change Photo:</label>
+                      <input type="file" accept='image/*' onChange={handleImageChange} />
+                    </p>
+                    <p>
+                      <label >Name:</label>
+                      <input type="text" name='name' value={profile?.name} onChange={handleInputChange} />
+                    </p>
+                    <p>
+                      <label >Email:</label>
+                      <input type="email" name='email' value={profile?.email} onChange={handleInputChange} disabled/>
+                    </p>
+                    <p>
+                      <label >Phone:</label>
+                      <input type="text" name='phone' value={profile?.phone} onChange={handleInputChange}/>
+                    </p>
+                    <p>
+                      <label >Bio:</label>
+                      <textarea name="bio" value={profile?.bio} onChange={handleInputChange} cols='30' rows='10'></textarea>
+                    </p>
+                    <button className='--btn --btn-primary --btn-block'>
+                      Update Profile
+                    </button>
+                  </form>
+                </>
+              )} 
+              
             </Card>
                     
           </div>
@@ -129,6 +144,15 @@ const Profile = () => {
       </section>
     </>
   )
+}
+
+export const UserName = () => {
+  const user = useSelector(selectUser) 
+
+  const username = user?.name || "..."
+
+  return <p className="--color-white"> Hi, {username} </p> 
+
 }
 
 export default Profile
