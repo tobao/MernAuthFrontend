@@ -12,6 +12,15 @@ import { toast } from 'react-toastify'
 const cloud_name = process.env.REACT_APP_CLOUD_NAME
 const upload_preset = process.env.REACT_APP_UPLOAD_PRESET
 
+export const shortenText = (text,n) => {
+  if(text.length > n){
+     const shoretenedText = text.substring(0,n).concat("...") //text.substring(0, n): Hàm substring lấy một phần của chuỗi text, bắt đầu từ chỉ mục 0 và kết thúc tại chỉ mục n (không bao gồm chỉ mục n). Điều này lấy n ký tự đầu tiên của chuỗi text.
+     //.concat("..."): Hàm concat thêm chuỗi "..." vào cuối chuỗi đã được rút ngắn.
+    return shoretenedText
+  }
+  return text
+}
+
 const Profile = () => {
   useRedirectLoggedOutUser('/login')
 
@@ -151,7 +160,7 @@ export const UserName = () => {
 
   const username = user?.name || "..."
 
-  return <p className="--color-white"> Hi, {username} </p> 
+  return <p className="--color-white"> Hi, {shortenText(username,5) } </p> 
 
 }
 
