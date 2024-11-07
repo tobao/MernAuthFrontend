@@ -30,13 +30,17 @@ const Profile = () => {
   }, [dispatch])
 
   const [profile, setProfile] = useState(initialState);
+  const [profileImage, setProfileImage] = useState(initialState)
+  const [imagePreview, setImagePreview] = useState(initialState)
 
-  const handleImageChange = () => {
-    
+  const handleImageChange = (e) => {
+    setProfileImage(e.target.files[0])
+    setImagePreview(URL.createObjectURL(e.target.files[0]))
   }
 
-  const handleInputChange = () => {
-    
+  const handleInputChange = (e) => {
+    const {name, value} = e.target
+    setProfile({...profile, [name]:value})
   }
 
   const saveProfile = () => {
@@ -57,7 +61,7 @@ const Profile = () => {
             <Card cardClass={'card'}> 
               <div className="profile-photo">
                 <div>
-                  <img src={profile.photo} alt="Profileimg" />
+                  <img src={imagePreview === null ? user?.photo: imagePreview} alt="Profileimg" />
                   <h3>{profile.role}</h3>
                 </div>
               </div>
