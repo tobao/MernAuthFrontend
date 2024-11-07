@@ -46,6 +46,12 @@ const updateUser = async (userData) => {
   return response.data
 }
 
+//Send Verification Email
+const sendVerificationEmail = async () => {
+  const response = await axios.post(API_URL + 'sendVerificationEmail')
+  return response.data.message
+}
+
 // Tạo đối tượng authService chứa các hàm dịch vụ
 const authService = {
   register,
@@ -53,7 +59,8 @@ const authService = {
   logout,
   getLoginStatus,
   getUser,
-  updateUser
+  updateUser,
+  sendVerificationEmail
 }
 
 export default authService
