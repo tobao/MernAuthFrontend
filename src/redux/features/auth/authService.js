@@ -40,13 +40,20 @@ const getUser = async () => {
   return response.data
 }
 
+//Update profile
+const updateUser = async (userData) => {
+  const response = await axios.patch(API_URL + 'updateUser', userData)
+  return response.data
+}
+
 // Tạo đối tượng authService chứa các hàm dịch vụ
 const authService = {
   register,
   login,
   logout,
   getLoginStatus,
-  getUser
+  getUser,
+  updateUser
 }
 
 export default authService
