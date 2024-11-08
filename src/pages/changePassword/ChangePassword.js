@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import { Spinner } from '../../components/loader/Loader'
 import { toast } from 'react-toastify'
 import { changePassword, logout, RESET } from '../../redux/features/auth/authSlice'
+import { sendAutomatedEmail } from '../../redux/features/email/emailSlice'
 
 const initialState = {
   oldPassword:'',
@@ -48,7 +49,16 @@ const ChangePassword = () => {
       password,
     }
 
+    const emailData = {
+      subject: "Password Changed - AUTH:Z",
+      send_to: user.email,
+      reply_to: "noreply@baoto.com",
+      template: "changePassword",
+      url: "/forgot",
+    }
+
     await dispatch(changePassword(userData))
+    await dispatch(sendAutomatedEmail(emailData))
     await dispatch(logout())
     await dispatch(RESET(userData))
     navigate("/login")
