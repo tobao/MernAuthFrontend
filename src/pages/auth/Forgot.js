@@ -3,17 +3,45 @@ import styles from './auth.module.scss'
 import Card from '../../components/card/Card'
 import { AiOutlineMail } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
+import { forgotPassword, RESET } from '../../redux/features/auth/authSlice'
+import { validateEmail } from '../../redux/features/auth/authService'
+import Loader from '../../components/loader/Loader'
 
 const Forgot = () => {
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('')
 
-  const forgot = () => {
+  const dispatch = useDispatch()
 
+  const { isLoading } = useSelector((state) => state.auth)
+
+  
+
+
+  const forgot = async(e) => {
+    e.preventDefault()
+
+    if (!email) {
+      return toast.error("Please enter an email")
+    }
+
+    if (!validateEmail(email)) {
+      return toast.error("Please enter a valid email")
+    }
+
+    const userData = {
+      email,
+    }
+
+    await dispatch(forgotPassword(userData))
+    await dispatch(RESET(userData))
   }
 
   return (
     <div className={`container ${styles.auth}`}>
+      {isLoading && <Loader/>}
       <Card>
         <div className={styles.form}>
 

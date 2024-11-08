@@ -66,6 +66,13 @@ const changePassword = async (userData) => {
   return response.data.message
 }
 
+//Forgot Password 
+const forgotPassword = async (userData) => {
+  const response = await axios.post(API_URL + 'forgotPassword',userData)
+
+  return response.data.message
+}
+
 // Tạo đối tượng authService chứa các hàm dịch vụ
 const authService = {
   register,
@@ -76,7 +83,8 @@ const authService = {
   updateUser,
   sendVerificationEmail,
   verifyUser,
-  changePassword
+  changePassword,
+  forgotPassword
 }
 
 export default authService
