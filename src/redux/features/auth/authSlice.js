@@ -110,15 +110,29 @@ export const verifyUser = createAsyncThunk(
   "auth/verifyUser",
   async (verificationToken, thunkAPI) => {
     try {
-      return await authService.verifyUser(verificationToken);
+      return await authService.verifyUser(verificationToken)
     } catch (error) {
       const message =
         (error.response &&
           error.response.data &&
           error.response.data.message) ||
         error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+// Change Password
+export const changePassword = createAsyncThunk(
+  "auth/changePassword",
+  async (userData, thunkAPI) => {
+    try {
+      return await authService.changePassword(userData)
+    } catch (error) {
+      const message =
+        (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+      return thunkAPI.rejectWithValue(message)
     }
   }
 )
@@ -266,6 +280,22 @@ const authSlice = createSlice({
       toast.success(action.payload);
     })
     .addCase(verifyUser.rejected, (state, action) => {
+      state.isLoading = false;
+      state.isError = true;
+      state.message = action.payload;
+      toast.error(action.payload);
+    })
+    // change Password
+    .addCase(changePassword.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(changePassword.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.message = action.payload;
+      toast.success(action.payload);
+    })
+    .addCase(changePassword.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.message = action.payload;

@@ -59,6 +59,13 @@ const verifyUser = async (verificationToken) => {
   return response.data.message
 }
 
+//Change Password 
+const changePassword = async (userData) => {
+  const response = await axios.patch(API_URL + 'changePassword',userData)
+
+  return response.data.message
+}
+
 // Tạo đối tượng authService chứa các hàm dịch vụ
 const authService = {
   register,
@@ -68,7 +75,8 @@ const authService = {
   getUser,
   updateUser,
   sendVerificationEmail,
-  verifyUser 
+  verifyUser,
+  changePassword
 }
 
 export default authService
