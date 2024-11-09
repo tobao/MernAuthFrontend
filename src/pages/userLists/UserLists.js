@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PageMenu from '../../components/pagemenu/PageMenu'
 import './UserLists.scss'
 import UserStats from '../../components/userStats/UserStats'
@@ -12,15 +12,20 @@ import { shortenText } from '../profile/Profile'
 import { Spinner } from '../../components/loader/Loader'
 import { confirmAlert } from "react-confirm-alert"
 import "react-confirm-alert/src/react-confirm-alert.css"
+import { FILTER_USERS, selectUsers } from '../../redux/features/auth/filterSlice'
 
 const UserLists = () => {
   useRedirectLoggedOutUser("/login")
 
   const dispatch = useDispatch()
 
+  const [search, setSearch] = useState("")
+
   const { users, isLoading, isLoggedIn, isSuccess, message } = useSelector(
     (state) => state.auth
   )
+
+  const filteredUsers = useSelector(selectUsers)
 
   useEffect(() => {
     dispatch(getUsers())
@@ -48,6 +53,10 @@ const UserLists = () => {
     })
   }
 
+  useEffect(()=>{
+    dispatch(FILTER_USERS({users,search}))
+  },[dispatch,users,search])
+
   return (
     <section>
       <div className="container">
@@ -61,7 +70,7 @@ const UserLists = () => {
                 <h3>All Users</h3>
               </span>
               <span>
-                <Search/>
+                <Search value={search} onChange={(e) => setSearch(e.target.value)}/>
               </span>
             </div>
             {/* Table */}
@@ -80,7 +89,7 @@ const UserLists = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {users.map((user, index) => {
+                  {filteredUsers.map((user, index) => {
                     const {_id, name, email, role } = user
 
                     return (
