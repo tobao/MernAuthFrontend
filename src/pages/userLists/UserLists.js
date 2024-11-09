@@ -90,7 +90,7 @@ const UserLists = () => {
                         <td>{email}</td>
                         <td>{role}</td>
                         <td>
-                          <ChangeRole />
+                          <ChangeRole _id={_id} email={email}/>
                         </td>
                         <td><span><FaTrashAlt size={20} color='red' onClick={() => confirmDelete(_id)}/></span></td>
                       </tr>
