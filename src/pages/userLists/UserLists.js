@@ -7,9 +7,11 @@ import { FaTrashAlt } from 'react-icons/fa'
 import ChangeRole from '../../components/changeRole/ChangeRole'
 import useRedirectLoggedOutUser from '../../customHook/useRedirectLoggedOutUsers'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUsers } from '../../redux/features/auth/authSlice'
+import { deleteUser, getUsers } from '../../redux/features/auth/authSlice'
 import { shortenText } from '../profile/Profile'
 import { Spinner } from '../../components/loader/Loader'
+import { confirmAlert } from "react-confirm-alert"
+import "react-confirm-alert/src/react-confirm-alert.css"
 
 const UserLists = () => {
   useRedirectLoggedOutUser("/login")
@@ -23,6 +25,28 @@ const UserLists = () => {
   useEffect(() => {
     dispatch(getUsers())
   }, [dispatch])
+
+  const removeUser = async (id) => {
+    await dispatch(deleteUser(id))
+    dispatch(getUsers())
+  }
+
+  const confirmDelete = (id) => {
+    confirmAlert({
+      title: "Delete This User",
+      message: "Are you sure to do delete this user?",
+      buttons: [
+        {
+          label: "Delete",
+          onClick: () => removeUser(id),
+        },
+        {
+          label: "Cancel",
+          onClick: () => alert("Click No"),
+        },
+      ],
+    })
+  }
 
   return (
     <section>
@@ -68,7 +92,7 @@ const UserLists = () => {
                         <td>
                           <ChangeRole />
                         </td>
-                        <td><span><FaTrashAlt size={20} color='red'/></span></td>
+                        <td><span><FaTrashAlt size={20} color='red' onClick={() => confirmDelete(_id)}/></span></td>
                       </tr>
                     )
                   })}

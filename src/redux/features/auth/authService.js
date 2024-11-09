@@ -87,6 +87,13 @@ const getUsers= async () => {
   return response.data
 }
 
+//Delete User 
+const deleteUser= async (id) => {
+  const response = await axios.delete(API_URL + id)
+
+  return response.data.message
+}
+
 // Tạo đối tượng authService chứa các hàm dịch vụ
 const authService = {
   register,
@@ -100,7 +107,8 @@ const authService = {
   changePassword,
   forgotPassword,
   resetPassword,
-  getUsers
+  getUsers,
+  deleteUser
 }
 
 export default authService
