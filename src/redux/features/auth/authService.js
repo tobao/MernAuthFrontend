@@ -73,6 +73,13 @@ const forgotPassword = async (userData) => {
   return response.data.message
 }
 
+//Reset Password 
+const resetPassword= async (userData,resetToken) => {
+  const response = await axios.patch(`${API_URL}resetPassword/${resetToken}`,userData)
+
+  return response.data.message
+}
+
 // Tạo đối tượng authService chứa các hàm dịch vụ
 const authService = {
   register,
@@ -84,7 +91,8 @@ const authService = {
   sendVerificationEmail,
   verifyUser,
   changePassword,
-  forgotPassword
+  forgotPassword,
+  resetPassword
 }
 
 export default authService
