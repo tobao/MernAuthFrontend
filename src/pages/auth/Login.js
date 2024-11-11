@@ -8,7 +8,7 @@ import PasswordInput from '../../components/passwordInput/PasswordInput'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { validateEmail } from '../../redux/features/auth/authService'
-import { login, RESET } from '../../redux/features/auth/authSlice'
+import { login, RESET, sendLoginCode } from '../../redux/features/auth/authSlice'
 import Loader from '../../components/loader/Loader'
 
 const initialState = {
@@ -58,6 +58,11 @@ const Login = () => {
     if(isSuccess && isLoggedIn){
       // Điều hướng đến trang profile
       navigate('/profile')
+    }
+
+    if(isError && twoFactor){
+      dispatch(sendLoginCode(email))
+      navigate(`/loginWithCode/${email}`)
     }
 
     // Gửi action RESET để reset trạng thái trong Redux store
