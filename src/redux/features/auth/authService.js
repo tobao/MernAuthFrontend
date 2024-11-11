@@ -96,7 +96,7 @@ const deleteUser= async (id) => {
 
 // Upgrade User
 const upgradeUser = async (userData) => {
-  const response = await axios.post(API_URL + "upgradeUser", userData);
+  const response = await axios.post(API_URL + "upgradeUser", userData)
 
   return response.data.message
 }
@@ -106,6 +106,13 @@ const sendLoginCode = async (email) => {
   const response = await axios.post(API_URL + `sendLoginCode/${email}`)
 
   return response.data.message
+}
+
+// Login With Code
+const loginWithCode = async (code, email) => {
+  const response = await axios.post(API_URL + `loginWithCode/${email}`, code)
+
+  return response.data
 }
 
 // Tạo đối tượng authService chứa các hàm dịch vụ
@@ -124,7 +131,8 @@ const authService = {
   getUsers,
   deleteUser,
   upgradeUser,
-  sendLoginCode
+  sendLoginCode,
+  loginWithCode
 }
 
 export default authService

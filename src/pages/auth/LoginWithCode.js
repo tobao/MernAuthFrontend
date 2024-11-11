@@ -1,24 +1,58 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './auth.module.scss'
 import Card from '../../components/card/Card'
 import { GrInsecure } from 'react-icons/gr'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from "react-redux"
+import { toast } from "react-toastify"
+import { loginWithCode, RESET, sendLoginCode } from '../../redux/features/auth/authSlice'
+import Loader from '../../components/loader/Loader'
 
-const LoginWithCode = () => {
+
+const LoginWithCode =  () => {
   const [loginCode, setLoginCode] = useState('')
 
-  const loginUserWithCode = () => {
+  const { email } = useParams()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
+  const { isLoading, isLoggedIn, isSuccess } = useSelector(
+    (state) => state.auth
+  )
+
+  const sendUserLoginCode = async () => {
+    await dispatch(sendLoginCode(email))
+    await dispatch(RESET())
   }
 
-  const sendUserLoginCode = () => {
-    
+  const loginUserWithCode = async (e) => {
+    e.preventDefault()
+
+    if (loginCode === "") {
+      return toast.error("Please fill in the login code")
+    }
+    if (loginCode.length !== 6) {
+      return toast.error("Access code must be 6 characters")
+    }
+
+    const code = {
+      loginCode,
+    }
+
+    await dispatch(loginWithCode({ code, email }))
   }
 
+  useEffect(() => {
+    if (isSuccess && isLoggedIn) {
+      navigate("/profile")
+    }
 
+    dispatch(RESET())
+  }, [isLoggedIn, isSuccess, dispatch, navigate])
 
   return (
     <div className={`container ${styles.auth}`}>
+      {isLoading && <Loader/>}
       <Card>
         <div className={styles.form}>
 
