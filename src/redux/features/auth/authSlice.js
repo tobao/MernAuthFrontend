@@ -214,7 +214,35 @@ const authSlice = createSlice({
       state.isSuccess= false;
       state.isLoading= false;
       state.message='';
-    }
+    },
+    CALC_VERIFIED_USER(state, action) {
+      const array = []
+      state.users.map((user) => {
+        const { isVerified } = user
+        return array.push(isVerified)
+      })
+      let count = 0
+      array.forEach((item) => {
+        if (item === true) {
+          count += 1
+        }
+      });
+      state.verifiedUsers = count
+    },
+    CALC_SUSPENDED_USER(state, action) {
+      const array = []
+      state.users.map((user) => {
+        const { role } = user
+        return array.push(role)
+      })
+      let count = 0
+      array.forEach((item) => {
+        if (item === "suspended") {
+          count += 1
+        }
+      })
+      state.suspendedUsers = count
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -450,7 +478,7 @@ const authSlice = createSlice({
   }
 })
 
-export const {RESET} = authSlice.actions
+export const {RESET,CALC_VERIFIED_USER,CALC_SUSPENDED_USER} = authSlice.actions
 
 export const selectIsLoggedIn = (state) => state.auth.isLoggedIn
 //Selector này được sử dụng để trích xuất giá trị của thuộc tính isLoggedIn từ slice "auth" trong Redux store. Selector là một cách tiện lợi để truy xuất dữ liệu từ Redux store mà không cần phải lặp lại nhiều lần cú pháp truy cập state trong các component của bạn.
