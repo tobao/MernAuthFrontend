@@ -27,7 +27,7 @@ const Profile = () => {
 
   const dispatch = useDispatch()
 
-  const {isLoading, isLoggedIn, isSuccess, message,user} = useSelector((state) => state.auth)
+  const {isLoading,user} = useSelector((state) => state.auth)
 
   const initialState = {
     name: user?.name || "",

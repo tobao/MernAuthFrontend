@@ -24,7 +24,7 @@ const Reset = () => {
 
   const { resetToken } = useParams();
   
-  const { isLoading, isLoggedIn, isSuccess, message } = useSelector(
+  const { isLoading, isSuccess, message } = useSelector(
     (state) => state.auth
   )
 

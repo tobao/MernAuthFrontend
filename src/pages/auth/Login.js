@@ -32,7 +32,7 @@ const Login = () => {
   const navigate = useNavigate()
 
   //Trích xuất các trạng thái từ Redux store
-  const {isLoading, isLoggedIn, isSuccess, message, isError , twoFactor} = useSelector((state) => state.auth)
+  const {isLoading, isLoggedIn, isSuccess, isError , twoFactor} = useSelector((state) => state.auth)
   
 
   const loginUser = async (e) => {

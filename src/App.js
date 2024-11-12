@@ -12,7 +12,7 @@ import ChangePassword from './pages/changePassword/ChangePassword';
 import UserLists from './pages/userLists/UserLists';
 // import Loader from './components/loader/Loader'
 import axios from 'axios'
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';

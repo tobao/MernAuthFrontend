@@ -31,7 +31,7 @@ const Register = () => {
     const navigate = useNavigate()
 
       //Trích xuất các trạng thái từ Redux store
-  const {isLoading, isLoggedIn, isSuccess, message} = useSelector((state) => state.auth)
+  const {isLoading, isLoggedIn, isSuccess} = useSelector((state) => state.auth)
 
   const [uCase, setUCase] = useState(false)
   const [num, setNum] = useState(false)
