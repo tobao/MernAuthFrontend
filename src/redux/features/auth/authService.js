@@ -115,6 +115,13 @@ const loginWithCode = async (code, email) => {
   return response.data
 }
 
+// Login With Google
+const loginWithGoogle = async (userToken) => {
+  const response = await axios.post(API_URL + "google/callback", userToken)
+
+  return response.data
+}
+
 // Tạo đối tượng authService chứa các hàm dịch vụ
 const authService = {
   register,
@@ -132,7 +139,8 @@ const authService = {
   deleteUser,
   upgradeUser,
   sendLoginCode,
-  loginWithCode
+  loginWithCode,
+  loginWithGoogle
 }
 
 export default authService
