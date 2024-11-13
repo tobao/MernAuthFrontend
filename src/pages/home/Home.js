@@ -1,6 +1,7 @@
 import './Home.scss'
 import React from 'react'
 import loginImg from '../../assets/login.svg'
+import { Link } from 'react-router-dom'
 
 const Home = () => {
   return (
@@ -12,10 +13,10 @@ const Home = () => {
         <p>Implement User Registration, Login, Password Reset, Social Login, User Permissions, Email Notifications, etc ...</p>
         <div className="hero-button --flex-start">
           <button className="--btn --btn-danger">
-            Register
+            <Link to='/register'>Register</Link>
           </button>
           <button className="--btn --btn-primary">
-            Login
+            <Link to='/login'>Login</Link>
           </button>
         </div>
       </div>
